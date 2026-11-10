@@ -1,0 +1,10 @@
+小黒さんにお願いがあります。
+Keepalivedというアプリケーションをローカル環境（インターネット不可）でインストールをしたいのですが、可能かどうか調査をお願いできますでしょうか？
+対象は、Ubuntu24.04です。
+AWSのインスタンス等で、試してみてくれませんか？（急ぎではないですが、今月中には解決したいです）
+ 
+Ubuntu 24.04 : Keepalived : インストール : Server World
+ 
+Ubuntu 24.04 : Keepalived : インストール : Server World
+Ubuntu 24.04 LTS において、VRRP (Virtual Router Redundancy Protocol) プロトコルを使用した高可用性を実装可能な Keepalived のインストールと設定方法を例示しています。
+ 
