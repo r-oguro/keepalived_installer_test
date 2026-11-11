@@ -1,17 +1,15 @@
 # パッケージリストの作成
-# 下記では依存関係のパッケージの抽出漏れがあった
-#   apt-rdepends keepalived | grep -v "^ " > download_list.txt
-apt-rdepends keepalived | awk '
-  /^[a-zA-Z0-9]/ { print $1 }                                   # 親パッケージ名を登録
-  /^[[:space:]]+(Depends|PreDepends|Recommends):/ {             # 必須・事前必須・推奨の行を見つけたら
-    gsub(/[()<>:=.0-9]/, "", $2)                                # バージョンなどの余計な記号を消去
-    print $2                                                    # 依存先・推奨先のパッケージ名を出力
-  }
-' | sort -u > download_list.txt
+# メインの keepalived 自体もリストの末尾に追加
+echo "***注意*** 必要に応じてsudo apt updateを実行してから作業してください"
+LANG=C apt-cache depends --recurse --no-suggests --no-conflicts --no-breaks --no-replaces --no-enhances keepalived | \
+grep -E '^[[:space:]]*(Depends|PreDepends|Recommends):' | \
+awk '{print $2}' | sed 's/<//;s/>//' | sort -u > download_list.txt
+echo "keepalived" >> download_list.txt
 # パッケージファイルのダウンロード
 cat download_list.txt | xargs -r -n 1 apt download 2>/dev/null
-# リポジトリ情報の作成
+# 新しい Packages.gz 目次ファイルを作成
 dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
+
 # パッケージのインストール
 # 下記は失敗
 #   sudo apt -o Dir::Etc::SourceList=/dev/null -o Dir::Etc::SourceParts=/dev/null -o APT::Get::List-Cleanup=0 install --no-install-recommends ./keepalived_*.deb

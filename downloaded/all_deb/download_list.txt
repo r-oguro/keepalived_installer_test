@@ -111,3 +111,4 @@ tar
 ubuntu-keyring
 xdg-user-dirs
 zlib1g
+keepalived
